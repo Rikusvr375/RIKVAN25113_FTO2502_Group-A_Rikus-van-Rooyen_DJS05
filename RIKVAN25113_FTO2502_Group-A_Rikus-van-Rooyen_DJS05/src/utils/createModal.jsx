@@ -1,15 +1,15 @@
 import React from "react";
-import GenreFilter from "../components/GenreFilter.jsx";
 import { formatDate } from "./formatDate.js";
+import { getNames } from "../components/GenreFilter"; 
 
 const CreateModal = ({ podcast, onClose, genres }) => {
   if (!podcast) return null;
 
   console.log("Modal Podcast Data:", podcast); // Debug the podcast in the modal
-  const genreNames = GenreFilter.getNames(podcast.genres || [], genres || []); // Ensure genres prop is used
-  const updatedDate = formatDate.format(podcast.updated || new Date().toISOString());
+  const genreNames = getNames(podcast.genres || [], genres || []);
 
-  // Handle seasons as a number (from PodcastContext) instead of an array
+  const updatedDate = formatDate(podcast.updated || new Date().toISOString());
+
   const seasonCount = podcast.seasons || 0;
 
   return (

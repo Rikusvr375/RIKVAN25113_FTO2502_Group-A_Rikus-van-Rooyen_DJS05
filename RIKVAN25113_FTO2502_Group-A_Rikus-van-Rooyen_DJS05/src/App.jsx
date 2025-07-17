@@ -10,6 +10,7 @@ import PodcastGrid from "./components/PodcastGrid";
 import Pagination from "./components/Pagination";
 import styles from "./App.module.css";
 import CreateModal from "./utils/createModal.jsx";
+import "./utils/createModal.css";
 
 /**
  * Root component of the Podcast Explorer app.

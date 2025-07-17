@@ -18,8 +18,8 @@ import { useContext } from "react";
  *
  * @returns {JSX.Element} A grid of <PodcastCard> components or a message if no results are found
  */
-export default function PodcastGrid({ genres, onPodcastCLick }) {
-  console.log("onPodcastClick in PodcastGrid:", onPodcastCLick); // Debug
+export default function PodcastGrid({ genres, onPodcastClick }) {
+  console.log("onPodcastClick in PodcastGrid:", onPodcastClick); // Debug
   const { podcasts } = useContext(PodcastContext);
   if (!podcasts.length) {
     return (
@@ -35,7 +35,7 @@ export default function PodcastGrid({ genres, onPodcastCLick }) {
             key={podcast.id} 
             podcast={podcast} 
             genres={genres} 
-            onPodcastCLick={onPodcastCLick}
+            onPodcastClick={onPodcastClick}
           />
         ))}
       </div>

@@ -16,7 +16,7 @@ import styles from "./PodcastCard.module.css";
  * @returns {JSX.Element} A podcast card element
  */
 export default function PodcastCard({ podcast, genres, onPodcastClick }) {
-  console.log("onPodcastClick in PodcastCard:", onPodcastClick); // Debug
+  
   const genreNames = genres
     .filter((g) => podcast.genres.includes(g.id))
     .map((g) => g.name);
