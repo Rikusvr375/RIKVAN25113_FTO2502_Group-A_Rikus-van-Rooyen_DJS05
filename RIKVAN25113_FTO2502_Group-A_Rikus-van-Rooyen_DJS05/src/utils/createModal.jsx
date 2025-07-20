@@ -55,40 +55,43 @@ const CreateModal = ({ podcast, onClose, genres }) => {
           </div>
         </div>
         <h3>Seasons</h3>
-        <ul className="season-list">
-          {details?.seasons && details.seasons.length > 0 ? (
-            details.seasons.map((season, idx) => (
-              <li key={idx} className="season-item">
-                <button
-                  className="season-toggle"
-                  onClick={() => setOpenSeason(openSeason === idx ? null : idx)}
-                  style={{ width: "100%", textAlign: "left", background: "none", border: "none", fontWeight: "bold", fontSize: "1rem", cursor: "pointer" }}
-                >
+        {details?.seasons && details.seasons.length > 0 ? (
+          <div>
+            <select
+              className="season-dropdown"
+              value={openSeason ?? 0}
+              onChange={e => setOpenSeason(Number(e.target.value))}
+              style={{ marginBottom: "16px", padding: "8px", fontSize: "1rem" }}
+            >
+              {details.seasons.map((season, idx) => (
+                <option key={idx} value={idx}>
                   Season {season.number || idx + 1} ({season.episodes ? season.episodes.length : 0} Episodes)
-                </button>
-                {openSeason === idx && season.episodes && (
-                  <div className="season-details">
-                    <img
-                      src={season.image || podcast.image || ""}
-                      alt={`Season ${season.number} cover`}
-                      style={{ width: "100%", maxWidth: "300px", margin: "10px 0" }}
-                    />
-                    <ul className="episode-list">
-                      {season.episodes.map((ep, epIdx) => (
-                        <li key={epIdx} className="episode-item" style={{ marginBottom: "10px" }}>
-                          <strong>Episode {ep.number || epIdx + 1}: {ep.title || "No Title"}</strong>
-                          <p>{shorten(ep.description, 80)}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </li>
-            ))
-          ) : (
+                </option>
+              ))}
+            </select>
+            {details.seasons[openSeason ?? 0] && (
+              <div className="season-details">
+                <img
+                  src={details.seasons[openSeason ?? 0].image || podcast.image || ""}
+                  alt={`Season ${details.seasons[openSeason ?? 0].number} cover`}
+                  style={{ width: "100%", maxWidth: "300px", margin: "10px 0" }}
+                />
+                <ul className="episode-list">
+                  {details.seasons[openSeason ?? 0].episodes.map((ep, epIdx) => (
+                    <li key={epIdx} className="episode-item" style={{ marginBottom: "10px" }}>
+                      <strong>Episode {ep.number || epIdx + 1}: {ep.title || "No Title"}</strong>
+                      <p>{shorten(ep.description, 80)}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        ) : (
+          <ul className="season-list">
             <li>No seasons available</li>
-          )}
-        </ul>
+          </ul>
+        )}
       </div>
     </div>
   );
