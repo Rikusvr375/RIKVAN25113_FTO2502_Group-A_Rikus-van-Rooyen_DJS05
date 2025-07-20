@@ -1,17 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { formatDate } from "./formatDate.js";
 import { getNames } from "../components/GenreFilter"; 
 import { genres } from "../data.js";
 
 const CreateModal = ({ podcast, onClose, genres }) => {
+  const [details, setDetails] = useState(null);
+  const [openSeason, setOpenSeason] = useState(null);
+
+  useEffect(() => {
+    if (podcast?.id) {
+      fetch(`https://podcast-api.netlify.app/id/${podcast.id}`)
+        .then(res => res.json())
+        .then(data => setDetails(data));
+    }
+  }, [podcast]);
+
   if (!podcast) return null;
 
-  console.log("Modal Podcast Data:", podcast); // Debug the podcast in the modal
   const genreNames = getNames(podcast.genres || [], genres || []);
-
   const updatedDate = formatDate(podcast.updated || new Date().toISOString());
 
-  const seasonCount = podcast.seasons || 0;
+  const shorten = (desc, len = 80) =>
+    desc && desc.length > len ? desc.slice(0, len) + "..." : desc;
 
   return (
     <div className={`modal ${!podcast ? "hidden" : ""}`} onClick={onClose}>
@@ -46,11 +56,35 @@ const CreateModal = ({ podcast, onClose, genres }) => {
         </div>
         <h3>Seasons</h3>
         <ul className="season-list">
-          {seasonCount > 0 ? (
-            <li className="season-item">
-              <strong className="season-title">{seasonCount} Season{seasonCount !== 1 ? "s" : ""}</strong>
-              <span className="episodes">Episode count not available</span>
-            </li>
+          {details?.seasons && details.seasons.length > 0 ? (
+            details.seasons.map((season, idx) => (
+              <li key={idx} className="season-item">
+                <button
+                  className="season-toggle"
+                  onClick={() => setOpenSeason(openSeason === idx ? null : idx)}
+                  style={{ width: "100%", textAlign: "left", background: "none", border: "none", fontWeight: "bold", fontSize: "1rem", cursor: "pointer" }}
+                >
+                  Season {season.number || idx + 1} ({season.episodes ? season.episodes.length : 0} Episodes)
+                </button>
+                {openSeason === idx && season.episodes && (
+                  <div className="season-details">
+                    <img
+                      src={season.image || podcast.image || ""}
+                      alt={`Season ${season.number} cover`}
+                      style={{ width: "100%", maxWidth: "300px", margin: "10px 0" }}
+                    />
+                    <ul className="episode-list">
+                      {season.episodes.map((ep, epIdx) => (
+                        <li key={epIdx} className="episode-item" style={{ marginBottom: "10px" }}>
+                          <strong>Episode {ep.number || epIdx + 1}: {ep.title || "No Title"}</strong>
+                          <p>{shorten(ep.description, 80)}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </li>
+            ))
           ) : (
             <li>No seasons available</li>
           )}

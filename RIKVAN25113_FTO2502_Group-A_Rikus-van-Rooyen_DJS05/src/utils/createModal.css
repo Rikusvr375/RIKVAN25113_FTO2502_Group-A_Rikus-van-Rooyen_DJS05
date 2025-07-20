@@ -131,3 +131,16 @@
     font-size: 0.8rem;
   }
 }
+
+.season-toggle{
+  cursor: pointer;
+  color: var(--primary-color);
+  font-weight: bold;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+}
+
+.season-toggle:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
