@@ -1,6 +1,7 @@
 import React from "react";
 import { formatDate } from "./formatDate.js";
 import { getNames } from "../components/GenreFilter"; 
+import { genres } from "../data.js";
 
 const CreateModal = ({ podcast, onClose, genres }) => {
   if (!podcast) return null;

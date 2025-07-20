@@ -8,7 +8,7 @@ import styles from "./GenreFilter.module.css";
 
 export const getNames = (genreIds, genres) => {
   return genreIds
-    .map((id) => genres.find((genre) => genre.id === id)?.name)
+    .map((id) => genres.find((genre) => genre.id === id)?.title)
     .filter(Boolean);
 };
 

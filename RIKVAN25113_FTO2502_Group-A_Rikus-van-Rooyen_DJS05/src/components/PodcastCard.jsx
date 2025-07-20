@@ -1,5 +1,6 @@
 import { formatDate } from "../utils/formatDate";
 import styles from "./PodcastCard.module.css";
+import { genres } from "../data";
 
 /**
  * PodcastCard Component
@@ -19,7 +20,7 @@ export default function PodcastCard({ podcast, genres, onPodcastClick }) {
   
   const genreNames = genres
     .filter((g) => podcast.genres.includes(g.id))
-    .map((g) => g.name);
+    .map((g) => g.title);
 
   return (
     <div className={styles.card} onClick={onPodcastClick ? () => onPodcastClick(podcast) : undefined}>
